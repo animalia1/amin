@@ -1,5 +1,5 @@
 <?PHP
-
+ 
   class commandeC {
 
     
@@ -28,13 +28,61 @@
             die('Erreur: '.$e->getMessage());
         }	
   }
-  
+  function recherche($id){
+		//$sql="SElECT * From employe e inner join formationphp.employe a on e.cin= a.cin";
+		$sql="SELECT COUNT(*) as mb,quantity FROM ligne_commande where produitid=$id";
+		$db = config::getConnexion();
+		try{
+		$liste=$db->query($sql);
+		return $liste;
+		}
+        catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+        }	
+  }
+  function modifierquantity($qt,$qtnew,$id){
+    $sql="update ligne_commande SET quantity=:quantity where produitid=:id";
+    $db=config::getConnexion();
+    $query=$db->prepare($sql);
+    $query->bindValue(':quantity',$qt+$qtnew);
+    $query->bindValue(':id', $id);
+    $query->execute();
+
+
+}
+
+function Nombreprod(){
+  //$sql="SElECT * From employe e inner join formationphp.employe a on e.cin= a.cin";
+  $sql="SELECT COUNT(*) as mb FROM ligne_commande";
+  $db = config::getConnexion();
+  try{
+  $liste=$db->query($sql);
+  return $liste;
+  }
+      catch (Exception $e){
+          die('Erreur: '.$e->getMessage());
+      }	
+}
   public static function supprimerCommande($id){
 		
 		$sql="DELETE FROM ligne_commande where ligneid= :id";
 		$db = config::getConnexion();
         $req=$db->prepare($sql);
 		$req->bindValue(':id',$id);
+		try{
+			$req->execute();
+           // header('Location: index.php');
+        }
+        catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+        }
+	}
+  
+  public static function vider(){
+		
+		$sql="TRUNCATE ligne_commande ";
+		$db = config::getConnexion();
+        $req=$db->prepare($sql);
 		try{
 			$req->execute();
            // header('Location: index.php');
@@ -60,7 +108,7 @@ try{
 			
         }
         catch (Exception $e){
-          header('Location: index.php');
+         // header('Location: index.php');
                 echo " Erreur ! ".$e->getMessage();
        echo " Les datas : " ;
             }

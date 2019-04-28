@@ -26,7 +26,11 @@
 </head>
 
 <body>
-<?php include ('header.php'); ?>
+<?php include ('header.php');
+
+include_once ("../../core/commandeH.php");
+include ("../../config.php");
+?>
 			<!-- Right Sidebar Menu -->
 			<div class="fixed-sidebar-right">
 				<ul class="right-sidebar">
@@ -471,21 +475,22 @@
 				<!-- /Title -->
 				
 				<!-- Row -->
+								
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="panel panel-default card-view">
 							<div class="panel-wrapper collapse in">
-								<div class="panel-body row">
+								<div class="panel-body">
 									<div class="table-wrap">
 										<div class="table-responsive">
-											<table class="table display responsive product-overview mb-30" id="myTable">
-												<thead>
+											<table id="example" class="table table-hover display  pb-30" >
+											<thead>
 													<tr>
-														<th>Name</th>
-														<th>Order ID</th>
-														<th>Photo</th>
-														<th>Product</th>
-														<th>Quantity</th>
+														<th>Id</th>
+														<th>Username</th>
+														
+														
+														<th>PrixTotale</th>
 														<th>Date</th>
 														<th>Status</th>
 														<th>Actions</th>
@@ -494,29 +499,27 @@
 												<tbody>
 												<?php
 
-include_once ("../../core/commandeC.php");
-include_once ("../../config.php");
-															$commande1=new commandeC();
-															$listeCommandes=$commande1->afficheCommande();
+
+															$commande1=new commandeH();
+															$listeCommandes=$commande1->afficheCommandeH();
 																 
 	                             foreach($listeCommandes as $row){
 															?>
 													<tr>
-														<td class="txt-dark"><?php echo $row['nom'] ?></td>
-														<td class="txt-dark">#<?php echo $row['id'] ?></td>
-														<td>
-															<img src="<?php echo $row['image'] ?>"  width="80">
+														<td class="txt-dark"><?php echo $row['id'] ?></td>
+														<td class="txt-dark">#<?php echo $row['username'] ?></td>
+													<!--	<td>
+															<img src="<?php //echo $row['image'] ?>"  width="80">
 														</td>
-														<td>Semi Circle Chair</td>
-														<td><?php echo $row['quantity'] ?></td>
-														<td><script type="text/javascript">
-															var ladate=new Date()
-	   													document.write(ladate.getDate()+"/"+(ladate.getMonth()+1)+"/"+ladate.getFullYear())
-															</script></td>
-														<td>
-															<span class="label label-warning font-weight-100">Pending</span>
+																-->
+
+														<td><?php echo $row['prixtotale'] ?></td>
+														<td><?php echo $row['datecreation'] ?></td>
+													
+															<td><span class="label label-warning font-weight-100"><?php echo $row['status'] ?></span>
 														</td>
-														<td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+														<td><a href="traitementcommandeH.php?modid=<?php echo $row['id'] ?>" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="traitementcommandeH.php?supid=<?php echo $row['id'] ?>"class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+															<td><a href="product-orders.php?id=<?php echo $row['id'] ?>" class="text-inverse" title="DETAILS" data-toggle="tooltip"><i class="zmdi zmdi-view-list-alt zmdi-hc-2x animated infinite pulse zmdi-hc-fw mdc-text-blue"></i></a></td>
 													</tr>
 															 <?php } ?>
 												</tbody>
@@ -528,9 +531,69 @@ include_once ("../../config.php");
 						</div>
 					</div>
 				</div>
+					<!-- Title -->
+					<div class="row heading-bg">
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+					  <h5 class="txt-dark">Details</h5>
+					</div>
 				<!-- /Row -->
-			</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="panel panel-default card-view">
+							<div class="panel-wrapper collapse in">
+								<div class="panel-body">
+									<div class="table-wrap">
+										<div class="table-responsive">
+											<table id="example" class="table table-hover display  pb-30" >
+											<thead>
+													<tr>
+														<th>Produitid</th>
+														<th>Prix</th>
+														
+														
+														<th>Quantity</th>
+														<th>CommandeID</th>
+												
+												
+													</tr>
+												</thead>
+												<tbody>
+												<?php
+
+
+															$commande2=new commandeH();
+															if(isset($_GET['id']))
+															$listeCommandes=$commande2->afficheproduitcommande($_GET['id']);
+																 
+	                             foreach($listeCommandes as $row){
+															?>
+													<tr>
+														<td class="txt-dark"><?php echo $row['produitid1'] ?></td>
+														<td class="txt-dark">#<?php echo $row['prix1'] ?></td>
+													<!--	<td>
+															<img src="<?php //echo $row['image'] ?>"  width="80">
+														</td>
+																-->
+
+														<td><?php echo $row['quantity1'] ?></td>
+														<td><?php echo $row['commandeid1'] ?></td>
+													
+														
+													
+							
+															 <?php } ?>
+												</tbody>
+											</table>
+										</div>
+									</div>	
+								</div>	
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Row -->
 			
+			</div>
 			<!-- Footer -->
 			<footer class="footer container-fluid pl-30 pr-30">
 				<div class="row">
@@ -542,7 +605,7 @@ include_once ("../../config.php");
 			<!-- /Footer -->
 			
 		</div>
-        <!-- /Main Content -->
+		<!-- /Main Content -->
 
     </div>
     <!-- /#wrapper -->
@@ -557,7 +620,15 @@ include_once ("../../config.php");
     
 	<!-- Data table JavaScript -->
 	<script src="../../vendors/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-	<script src="../dist/js/productorders-data.js"></script>
+	<script src="../../vendors/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="../../vendors/bower_components/datatables.net-buttons/js/buttons.flash.min.js"></script>
+	<script src="../../vendors/bower_components/jszip/dist/jszip.min.js"></script>
+	<script src="../../vendors/bower_components/pdfmake/build/pdfmake.min.js"></script>
+	<script src="../../vendors/bower_components/pdfmake/build/vfs_fonts.js"></script>
+	
+	<script src="../../vendors/bower_components/datatables.net-buttons/js/buttons.html5.min.js"></script>
+	<script src="../../vendors/bower_components/datatables.net-buttons/js/buttons.print.min.js"></script>
+	<script src="../dist/js/export-table-data.js"></script>
 	
 	<!-- Slimscroll JavaScript -->
 	<script src="../dist/js/jquery.slimscroll.js"></script>
@@ -567,13 +638,15 @@ include_once ("../../config.php");
 	
 	<!-- Switchery JavaScript -->
 	<script src="../../vendors/bower_components/switchery/dist/switchery.min.js"></script>
-		
+	
+	
 	<!-- Fancy Dropdown JS -->
 	<script src="../dist/js/dropdown-bootstrap-extended.js"></script>
-		
+	
 	<!-- Init JavaScript -->
 	<script src="../dist/js/init.js"></script>
-
+	
 </body>
 
 </html>
+				

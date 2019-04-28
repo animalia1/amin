@@ -169,12 +169,20 @@
 													</a>
 													<div class="search-form-wrap show-popup hide"></div>
 												</div>
-
+												<?php include '../entities/commande.php';
+include '../core/commandeC.php';	 
+$pcore=new commandeC();
+$mb=$pcore->Nombreprod();
+foreach ($mb as $value) {
+# code...
+$nombre=$value['mb'];
+}
+ ?>
 													<div class="navbar-wishlist">
 														<a class="wishlist" href="cart.php">
 															<span class="minicart-icon">
 																<i class="fa fa-shopping-cart"></i>
-																<span>0</span>
+																<span><?php echo $nombre; ?></span>
 															</span>
 														</a>
 													</div>

@@ -21,12 +21,26 @@ function afficheCoupon($code){
     }	
 }
 
+
 if(isset($_REQUEST['id']) and isset($_REQUEST['quantity'])   and isset($_REQUEST['price'])){
 
     $p=new commande($_REQUEST['id'],$_REQUEST['price'],$_REQUEST['quantity']);
    //2-instance
    $pcore=new commandeC();
+   $mb=$pcore->recherche($_REQUEST['id']);
+   foreach ($mb as $value) {
+       # code...
+       $nombre=$value['mb'];
+       $qt=$value['quantity'];
+   }
+   if($nombre==0)
    $pcore->ajoutCommande($p);
+   else{
+    $pcore->modifierquantity($qt,$_REQUEST['quantity'],$_REQUEST['id']);
+   }
+   
+   //
+
    header ('Location: ../shop-detail.php?id='.$_REQUEST['id']);
 
 }else if(isset($_REQUEST['supid'])){
@@ -35,11 +49,11 @@ if(isset($_REQUEST['id']) and isset($_REQUEST['quantity'])   and isset($_REQUEST
     $pcore->supprimerCommande($_REQUEST['supid']);
     header ('Location: ../cart.php');
 
-}else if(isset($_REQUEST['qt'])){
+}else if(isset($_REQUEST['quantity']) ){
     //2-instance
     $pcore=new commandeC();
-    $pcore->modifCommande($_REQUEST['qt']);
-    header ('Location: ../cart.php');
+    $pcore->modifCommande($_REQUEST['quantity']);
+   header ('Location: ../cart.php');
 
 }else if(isset($_REQUEST['coupon'])){
     //2-instance

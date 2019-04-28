@@ -389,6 +389,7 @@
 						
 							<li>
 								<a href="product-orders.php">Les commandes</a>
+								<a href="coupon.php">Coupons</a>
 							</li>
 						
 						</ul>

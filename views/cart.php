@@ -51,7 +51,7 @@
 						<div class="col-md-12">
 							<div class="main-content">
 								<div class="commerce">
-									<form>
+									<form >
 										<table class="table shop_table cart">
 											<thead>
 												<tr>
@@ -121,12 +121,18 @@ include_once ("../core/commandeC.php");
 														<div class="coupon">
 															<label for="coupon_code">Coupon:</label> 
 															<input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"/> 
+													
+															<input type="button"  class="button rounded" name="apply_coupon" value="Apply Coupon" onclick="coupon()"/>
 															
-															<input type="button" onclick="window.location.href='admin/traitementCommande.php?coupon=' + document.getElementById('coupon_code').value" class="button rounded" name="apply_coupon" value="Apply Coupon" onclick="coupon()"/>
 														</div>
-														<input type="button" onclick="window.location.href='admin/traitementCommande.php?qt=' + document.getElementById('quantity').value" class="button update-cart-button rounded" name="update_cart" value="Update Cart" />
+														
+													
+															<p id="error" style="color:red;"></p>
+															<input type="button" onclick="window.location.href='admin/traitementCommande.php?quantity=' + document.getElementById('quantity').value" class="button update-cart-button rounded" name="update_cart" value="Update Cart" />
+														<input type="button"  class="button rounded" name="apply_coupon" value="Imprimer" onclick="imprimer()"/>	
 													</td>
 												</tr>
+												
 											</tbody>
 										</table>
 									</form>
@@ -141,8 +147,18 @@ include_once ("../core/commandeC.php");
 												<tr class="Promotion">
 													<th>coupon</th>
 													<td><span class="amount"><?php if(isset($_REQUEST['coupon']) and $_REQUEST['coupon'] != 0){
+														
+include_once ("../core/couponC.php");
+														/*$pcore=new couponC();
+														$nb=$pcore->Nombrecoupon();
+														foreach ($nb as $value) {
+														# code...
+														$nombre=$value['nb'];
+														}*/
   														$prixTotale = $prixTotale - (($prixTotale * $_REQUEST['coupon']) / 100);
- 														echo $_REQUEST['coupon']."%" ;} ?></span></td>
+														 echo $_REQUEST['coupon']."%" ;
+														// echo $nombre;}
+													 } ?></span></td>
 												</tr>
 												<tr class="order-total">
 													<th>Total</th>
@@ -150,7 +166,7 @@ include_once ("../core/commandeC.php");
 												</tr>
 											</table>
 											<div class="wc-proceed-to-checkout">
-												<a href="#" class="checkout-button button alt wc-forward rounded">Proceed to Checkout</a>
+												<a href="traitementpanier.php" class="checkout-button button alt wc-forward rounded">Proceed to Checkout</a>
 											</div>
 										</div>
 									
@@ -493,15 +509,19 @@ include_once ("../core/commandeC.php");
 		<script>
 				function coupon(){
 					var coupon_code=document.getElementById('coupon_code').value;
-					if(coupon_code.length!=6)
-					alert("coupon code invalide !");
-					else
-					alert("coupon code valide !");
+					if(coupon_code.length !=4)
+					document.getElementById("error").innerHTML = "Coupon Invalide !";
+					else{
+					window.location.href='admin/traitementCommande.php?coupon=' + document.getElementById('coupon_code').value;
+					}
 				}
 				function quantity(){
-					var quantity=document.getElementBy  ('quantity').value;
+					var quantity=document.getElementById('quantity').value;
 					if(quantity.length>=12)
 					alert("Enstock !");
+				}
+				function imprimer(){
+					window.location.href="imprimer.php";
 				}
 			</script>
 	</body>
